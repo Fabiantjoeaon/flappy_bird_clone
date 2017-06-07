@@ -3,7 +3,7 @@ Flappy Bird Clone (school assignment)
 
 [Play Game](https://fabiantjoeaon.github.io/flappy_bird_clone/)
 
-# Info for teacher
+# Info
 * Build in Javascript with ES6 Class syntax
 * Build with P5.js
 * Bundled and compiled with Webpack & Babel
