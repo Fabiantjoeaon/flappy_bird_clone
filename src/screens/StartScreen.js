@@ -8,6 +8,9 @@ export default class StartScreen extends Screen {
         this.show();
     }
 
+    /**
+     * @private
+     */
     getStartButton() {
         return $('.start-button');;
     }

@@ -7,3 +7,8 @@ Flappy Bird Clone (school assignment)
 * Bundled and compiled with Webpack & Babel
 * Private propertiess and methods start with ```_``` underscore.
 * Methods are also docblocked.
+
+# UML Diagram
+![uml diagram][uml]
+
+[uml]: ./assets/uml.png "UML Diagram"

@@ -38742,6 +38742,11 @@ var StartScreen = function (_Screen) {
         return _this;
     }
 
+    /**
+     * @private
+     */
+
+
     _createClass(StartScreen, [{
         key: 'getStartButton',
         value: function getStartButton() {
