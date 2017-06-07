@@ -9,16 +9,25 @@ export default class Book {
     this.velocity = 0;
   }
 
+  /**
+   * @public
+   */
   show() {
     this.p.noStroke();
     this.p.fill(255);
     this.p.ellipse(this.x, this.y, 32, 32);
   }
 
+  /**
+   * @public
+   */
   up() {
     this.velocity += this.lift;
   }
 
+  /**
+   * @public
+   */
   update() {
     this.velocity += this.gravity;
     this.velocity *= 0.9;

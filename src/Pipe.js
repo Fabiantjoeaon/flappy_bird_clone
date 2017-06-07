@@ -10,6 +10,10 @@ export default class Pipe {
     this.highlight = false;
   }
 
+  /**
+   * @public
+   * @param {Book} book 
+   */
   hits(book) {
     if (book.y < this.top || book.y > this.p.height - this.bottom) {
       if (book.x > this.x && book.x < this.x + this.w) {
@@ -21,6 +25,9 @@ export default class Pipe {
     return false;
   }
 
+  /**
+   * @public
+   */
   show() {
     this.p.noStroke();
     this.p.fill(3, 202, 23);
@@ -32,14 +39,24 @@ export default class Pipe {
     this.p.rect(this.x, this.p.height-this.bottom, this.w, this.bottom);
   }
 
+  /**
+   * @public
+   */
   update() {
     this.x -= this.speed;
   }
 
+  /**
+   * @public
+   */
   isOffScreen() {
     return this.x < -this.w;
   }
 
+  /**
+   * @public
+   * @param {Book} book 
+   */
   isPast(book) {
     if(!this.hits(book)) 
       return this.x < book.x;

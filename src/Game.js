@@ -90,6 +90,9 @@ export default class Game {
     });
   }
 
+  /**
+   * @private
+   */
   _start() {
     this._startScreen.hide();
     this._isRunning = true;

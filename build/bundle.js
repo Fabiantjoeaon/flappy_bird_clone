@@ -1210,6 +1210,11 @@ var Book = function () {
     this.velocity = 0;
   }
 
+  /**
+   * @public
+   */
+
+
   _createClass(Book, [{
     key: "show",
     value: function show() {
@@ -1217,11 +1222,21 @@ var Book = function () {
       this.p.fill(255);
       this.p.ellipse(this.x, this.y, 32, 32);
     }
+
+    /**
+     * @public
+     */
+
   }, {
     key: "up",
     value: function up() {
       this.velocity += this.lift;
     }
+
+    /**
+     * @public
+     */
+
   }, {
     key: "update",
     value: function update() {
@@ -1392,6 +1407,11 @@ var Game = function () {
                 _this3._start();
             });
         }
+
+        /**
+         * @private
+         */
+
     }, {
         key: '_start',
         value: function _start() {
@@ -1483,6 +1503,12 @@ var Pipe = function () {
     this.highlight = false;
   }
 
+  /**
+   * @public
+   * @param {Book} book 
+   */
+
+
   _createClass(Pipe, [{
     key: "hits",
     value: function hits(book) {
@@ -1495,6 +1521,11 @@ var Pipe = function () {
       this.highlight = false;
       return false;
     }
+
+    /**
+     * @public
+     */
+
   }, {
     key: "show",
     value: function show() {
@@ -1506,16 +1537,32 @@ var Pipe = function () {
       this.p.rect(this.x, 0, this.w, this.top);
       this.p.rect(this.x, this.p.height - this.bottom, this.w, this.bottom);
     }
+
+    /**
+     * @public
+     */
+
   }, {
     key: "update",
     value: function update() {
       this.x -= this.speed;
     }
+
+    /**
+     * @public
+     */
+
   }, {
     key: "isOffScreen",
     value: function isOffScreen() {
       return this.x < -this.w;
     }
+
+    /**
+     * @public
+     * @param {Book} book 
+     */
+
   }, {
     key: "isPast",
     value: function isPast(book) {
