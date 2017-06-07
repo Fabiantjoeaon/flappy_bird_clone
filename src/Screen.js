@@ -1,9 +1,12 @@
 export default class Screen {
-    constructor(el) {
-        this.el = el;
+    constructor(screenEl) {
+        this.screenEl = screenEl;
     }
 
+    /**
+     * @public
+     */
     show() {
-        
+        this.screenEl.style.display = 'block';
     }
 }

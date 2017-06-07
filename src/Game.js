@@ -2,6 +2,8 @@ import bindAll from 'lodash/bindAll';
 import Score from './Score';
 import Pipe from './Pipe';
 import Book from './Book';
+import GameOverScreen from './GameOverScreen';
+import {$, $$} from './utils/Bling';
 
 export default class Game {
   constructor(w, h) {
@@ -15,16 +17,23 @@ export default class Game {
     this.pipes = [];
     this.score = new Score(0);
 
-    bindAll(this, 'init');
+    bindAll(this, '_init');
   }
 
-  init(p5) {
+  /**
+   * @private
+   * @param {Function} p5 
+   */
+  _init(p5) {
     this.p = p5;
 
-    this.processSketch();
+    this._processP5Sketch();
   }
 
-  processSketch() {
+  /**
+   * @private
+   */
+  _processP5Sketch() {
     this.p.setup = () => {
         this.p.createCanvas(this.w, this.h);
         this.p.textFont('Helvetica');
@@ -40,7 +49,7 @@ export default class Game {
         this.score.show(this.p);
         this.book.update();
 
-        this.handlePipes();
+        this._handlePipes();
     }
 
     this.p.keyPressed = () => {
@@ -50,16 +59,34 @@ export default class Game {
     }
   }
 
-  showGameOverScreen() {
-      this.p.noLoop();
+  /**
+   * @private
+   */
+  _handleGameOver() {
+      setTimeout(() => {
+        this.p.noLoop();
+        const screen = new GameOverScreen($('.gameover'));
+        screen.renderScore(this.score.getScore());
+      }, 10);
   }
 
-  detectPipeCollision(pipe) {
+  handleStart() {
+
+  }
+
+  /**
+   * @private
+   * @param {Pipe} pipe 
+   */
+  _detectPipeCollision(pipe) {
     if(pipe.hits(this.book))
-        this.showGameOverScreen(null);
+        this._handleGameOver();
   }
 
-  handlePipes() {
+  /**
+   * @private
+   */
+  _handlePipes() {
     if(this.p.frameCount % 100 == 0) 
         this.pipes.push(new Pipe(this.p));
 
@@ -67,19 +94,23 @@ export default class Game {
         this.pipes[i].show();
         this.pipes[i].update();
 
-        this.detectPipeCollision(this.pipes[i]);
+        this._detectPipeCollision(this.pipes[i]);
 
         if(this.pipes[i].isPast(this.book)) {
             this.score.add(1);
         }
 
         if(this.pipes[i].isOffScreen()) {
-            this.removePipe(i);
+            this._removePipe(i);
         }
     }
   }
 
-  removePipe(i) {
+  /**
+   * @private
+   * @param {Integer} i 
+   */
+  _removePipe(i) {
     this.pipes.splice(i, 1);
   }
 }

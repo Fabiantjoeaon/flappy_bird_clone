@@ -1129,8 +1129,6 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
 var _p = __webpack_require__(86);
 
 var _p2 = _interopRequireDefault(_p);
@@ -1143,28 +1141,16 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-var RenderHandler = function () {
-  function RenderHandler(element) {
-    _classCallCheck(this, RenderHandler);
+var RenderHandler = function RenderHandler(element) {
+  _classCallCheck(this, RenderHandler);
 
-    this.p5;
-    this.element = element;
+  this.element = element;
 
-    this.gameInstance = new _Game2.default(window.innerWidth, window.innerHeight);
-    this.game = this.gameInstance.init;
+  this.gameInstance = new _Game2.default(window.innerWidth, window.innerHeight);
+  this.game = this.gameInstance.init;
 
-    this.setup();
-  }
-
-  _createClass(RenderHandler, [{
-    key: 'setup',
-    value: function setup() {
-      this.p5 = new _p2.default(this.game, this.element);
-    }
-  }]);
-
-  return RenderHandler;
-}();
+  this.p5 = new _p2.default(this.game, this.element);
+};
 
 exports.default = RenderHandler;
 
@@ -1225,6 +1211,12 @@ var _Book = __webpack_require__(90);
 
 var _Book2 = _interopRequireDefault(_Book);
 
+var _GameOverScreen = __webpack_require__(92);
+
+var _GameOverScreen2 = _interopRequireDefault(_GameOverScreen);
+
+var _Bling = __webpack_require__(91);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -1243,19 +1235,30 @@ var Game = function () {
         this.pipes = [];
         this.score = new _Score2.default(0);
 
-        (0, _bindAll2.default)(this, 'init');
+        (0, _bindAll2.default)(this, '_init');
     }
 
+    /**
+     * @private
+     * @param {Function} p5 
+     */
+
+
     _createClass(Game, [{
-        key: 'init',
-        value: function init(p5) {
+        key: '_init',
+        value: function _init(p5) {
             this.p = p5;
 
-            this.processSketch();
+            this._processP5Sketch();
         }
+
+        /**
+         * @private
+         */
+
     }, {
-        key: 'processSketch',
-        value: function processSketch() {
+        key: '_processP5Sketch',
+        value: function _processP5Sketch() {
             var _this = this;
 
             this.p.setup = function () {
@@ -1273,7 +1276,7 @@ var Game = function () {
                 _this.score.show(_this.p);
                 _this.book.update();
 
-                _this.handlePipes();
+                _this._handlePipes();
             };
 
             this.p.keyPressed = function () {
@@ -1281,39 +1284,70 @@ var Game = function () {
                 _this.book.up();
             };
         }
+
+        /**
+         * @private
+         */
+
     }, {
-        key: 'showGameOverScreen',
-        value: function showGameOverScreen() {
-            this.p.noLoop();
+        key: '_handleGameOver',
+        value: function _handleGameOver() {
+            var _this2 = this;
+
+            setTimeout(function () {
+                _this2.p.noLoop();
+                var screen = new _GameOverScreen2.default((0, _Bling.$)('.gameover'));
+                screen.renderScore(_this2.score.getScore());
+            }, 10);
         }
     }, {
-        key: 'detectPipeCollision',
-        value: function detectPipeCollision(pipe) {
-            if (pipe.hits(this.book)) this.showGameOverScreen(null);
-        }
+        key: 'handleStart',
+        value: function handleStart() {}
+
+        /**
+         * @private
+         * @param {Pipe} pipe 
+         */
+
     }, {
-        key: 'handlePipes',
-        value: function handlePipes() {
+        key: '_detectPipeCollision',
+        value: function _detectPipeCollision(pipe) {
+            if (pipe.hits(this.book)) this._handleGameOver();
+        }
+
+        /**
+         * @private
+         */
+
+    }, {
+        key: '_handlePipes',
+        value: function _handlePipes() {
             if (this.p.frameCount % 100 == 0) this.pipes.push(new _Pipe2.default(this.p));
 
             for (var i = this.pipes.length - 1; i >= 0; i--) {
                 this.pipes[i].show();
                 this.pipes[i].update();
 
-                this.detectPipeCollision(this.pipes[i]);
+                this._detectPipeCollision(this.pipes[i]);
 
                 if (this.pipes[i].isPast(this.book)) {
                     this.score.add(1);
                 }
 
                 if (this.pipes[i].isOffScreen()) {
-                    this.removePipe(i);
+                    this._removePipe(i);
                 }
             }
         }
+
+        /**
+         * @private
+         * @param {Integer} i 
+         */
+
     }, {
-        key: 'removePipe',
-        value: function removePipe(i) {
+        key: '_removePipe',
+        value: function _removePipe(i) {
             this.pipes.splice(i, 1);
         }
     }]);
@@ -38346,11 +38380,23 @@ var Score = function () {
         this._y = 20;
     }
 
+    /**
+     * @public
+     * @param {Integer} num 
+     */
+
+
     _createClass(Score, [{
         key: 'add',
         value: function add(num) {
             this._score += num;
         }
+
+        /**
+         * @public
+         * @param {Function} p5 
+         */
+
     }, {
         key: 'show',
         value: function show(p5) {
@@ -38358,6 +38404,11 @@ var Score = function () {
             p5.textSize(this._size);
             p5.text(this._score, this._x, this._y, this._width, this._height);
         }
+
+        /**
+         * @public
+         */
+
     }, {
         key: 'getScore',
         value: function getScore() {
@@ -38508,6 +38559,134 @@ var Book = function () {
 }();
 
 exports.default = Book;
+
+/***/ }),
+/* 91 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+var $ = document.querySelector.bind(document);
+var $$ = document.querySelectorAll.bind(document);
+
+Node.prototype.on = window.on = function (name, fn) {
+    this.addEventListener(name, fn);
+};
+
+NodeList.prototype.__proto__ = Array.prototype;
+
+NodeList.prototype.on = NodeList.prototype.addEventListener = function (name, fn) {
+    this.forEach(function (elem, i) {
+        elem.on(name, fn);
+    });
+};
+
+exports.$ = $;
+exports.$$ = $$;
+
+/***/ }),
+/* 92 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _Screen2 = __webpack_require__(93);
+
+var _Screen3 = _interopRequireDefault(_Screen2);
+
+var _Bling = __webpack_require__(91);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var GameOverScreen = function (_Screen) {
+    _inherits(GameOverScreen, _Screen);
+
+    function GameOverScreen(el) {
+        _classCallCheck(this, GameOverScreen);
+
+        var _this = _possibleConstructorReturn(this, (GameOverScreen.__proto__ || Object.getPrototypeOf(GameOverScreen)).call(this, el));
+
+        _this.tryAgainEl = (0, _Bling.$)('.try-again');
+        _this.tryAgainEl.on('click', function () {
+            window.location.reload(false);
+        });
+        return _this;
+    }
+
+    /**
+     * @public
+     * @param {Integer} score 
+     */
+
+
+    _createClass(GameOverScreen, [{
+        key: 'renderScore',
+        value: function renderScore(score) {
+            this.show();
+            (0, _Bling.$)('.score').innerText = score;
+        }
+    }]);
+
+    return GameOverScreen;
+}(_Screen3.default);
+
+exports.default = GameOverScreen;
+
+/***/ }),
+/* 93 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var Screen = function () {
+    function Screen(screenEl) {
+        _classCallCheck(this, Screen);
+
+        this.screenEl = screenEl;
+    }
+
+    /**
+     * @public
+     */
+
+
+    _createClass(Screen, [{
+        key: 'show',
+        value: function show() {
+            this.screenEl.style.display = 'block';
+        }
+    }]);
+
+    return Screen;
+}();
+
+exports.default = Screen;
 
 /***/ })
 /******/ ]);
