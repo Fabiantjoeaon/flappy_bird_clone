@@ -11,15 +11,32 @@
     }
 
     .gameover {
+        background-color: rgba(0,0,0,0.6);
+    }
+
+    .start {
+        background-color: papayawhip;
+    }
+
+    .start-inner {
+        width: 50%;
+        margin: 200px auto 0px auto;
+        text-align: center;
+    }
+    .start h1 {
+        
+        color: palevioletred;
+        font-family:Helvetica, Arial, sans-serif;
+    }
+
+    .screen {
+        display: none;
         position: absolute;
         top: 0;
         left: 0;
         width: 100vw;
         height: 100vh;
-        background-color: rgba(0,0,0,0.6);
-        display: none;
     }
-
     .meta {
         width: 50%;
         margin: 0 auto;
@@ -36,7 +53,7 @@
 </head>
 
 <body>
-    <div class='gameover'>
+    <div class='gameover screen'>
         <div class="meta">
             <h1>Your score:</h1>
             <span class='score'></span>
@@ -45,7 +62,13 @@
         </div>
     </div>
 
-    <div class="start"></div>
+    <div class="start screen">
+        <div class="start-inner">
+            <h1>Flappy Bird Clone</h1>
+            <button class="start-button">Start game</button>
+        </div>
+        
+    </div>
 
     <div class="root"></div>
 

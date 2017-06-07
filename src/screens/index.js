@@ -9,4 +9,11 @@ export default class Screen {
     show() {
         this.screenEl.style.display = 'block';
     }
+
+    /**
+     * @public
+     */
+    hide() {
+        this.screenEl.style.display = 'none';
+    }
 }

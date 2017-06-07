@@ -1,5 +1,5 @@
-import Screen from './Screen';
-import {$, $$} from './utils/Bling';
+import Screen from './index';
+import {$, $$} from '../utils/Bling';
 
 export default class GameOverScreen extends Screen {
     constructor(el) {

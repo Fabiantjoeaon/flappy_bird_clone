@@ -2,13 +2,18 @@ import bindAll from 'lodash/bindAll';
 import Score from './Score';
 import Pipe from './Pipe';
 import Book from './Book';
-import GameOverScreen from './GameOverScreen';
+import GameOverScreen from './screens/GameOverScreen';
+import StartScreen from './screens/StartScreen';
 import {$, $$} from './utils/Bling';
 
 export default class Game {
   constructor(w, h) {
     this.w = w;
     this.h = h;
+
+    this._startScreen;
+    this._gameOverScree;
+    this._isRunning = false;
 
     this.background = '#adecff';
 
@@ -17,14 +22,14 @@ export default class Game {
     this.pipes = [];
     this.score = new Score(0);
 
-    bindAll(this, '_init');
+    bindAll(this, 'init');
   }
 
   /**
-   * @private
+   * @public
    * @param {Function} p5 
    */
-  _init(p5) {
+  init(p5) {
     this.p = p5;
 
     this._processP5Sketch();
@@ -34,7 +39,9 @@ export default class Game {
    * @private
    */
   _processP5Sketch() {
+    this._handleStart();
     this.p.setup = () => {
+        this.p.noLoop();
         this.p.createCanvas(this.w, this.h);
         this.p.textFont('Helvetica');
 
@@ -43,18 +50,20 @@ export default class Game {
     }
 
     this.p.draw = () => {
-        this.p.background(this.background);
+        if(this._isRunning) {
+            this.p.background(this.background);
 
-        this.book.show();
-        this.score.show(this.p);
-        this.book.update();
+            this.book.show();
+            this.score.show(this.p);
+            this.book.update();
 
-        this._handlePipes();
+            this._handlePipes();
+        }
     }
 
     this.p.keyPressed = () => {
         if(this.p.key = '')
-            console.log('efhueh')
+            console.log('up')
             this.book.up();
     }
   }
@@ -65,13 +74,26 @@ export default class Game {
   _handleGameOver() {
       setTimeout(() => {
         this.p.noLoop();
-        const screen = new GameOverScreen($('.gameover'));
-        screen.renderScore(this.score.getScore());
+        this._gameOverScreen = new GameOverScreen($('.gameover'));
+        this._gameOverScreen.renderScore(this.score.getScore());
       }, 10);
   }
 
-  handleStart() {
+  /**
+   * @private
+   */
+  _handleStart() {
+    this._startScreen = new StartScreen($('.start'));
+    const button = this._startScreen.getStartButton();
+    button.on('click', () => {
+        this._start();
+    });
+  }
 
+  _start() {
+    this._startScreen.hide();
+    this._isRunning = true;
+    this.p.loop();
   }
 
   /**
