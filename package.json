@@ -1,0 +1,34 @@
+{
+  "name": "flappy_bird_clone",
+  "version": "1.0.0",
+  "description": "Flappy Bird Clone",
+  "main": "sketch.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Fabiantjoeaon/flappy_bird_clone.git"
+  },
+  "author": "Fabian Tjoe-A-On",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Fabiantjoeaon/flappy_bird_clone/issues"
+  },
+  "homepage": "https://github.com/Fabiantjoeaon/flappy_bird_clone#readme",
+  "dependencies": {
+    "babel-loader": "^7.0.0",
+    "babel-preset-es2015": "^6.24.1",
+    "babel-preset-stage-0": "^6.24.1",
+    "lodash": "^4.17.4",
+    "p5": "^0.5.11",
+    "webpack": "^2.6.1"
+  },
+  "devDependencies": {
+    "babel-core": "^6.24.1",
+    "babel-loader": "^7.0.0",
+    "babel-preset-es2015": "^6.24.1",
+    "babel-preset-stage-0": "^6.24.1",
+    "webpack": "^2.6.1"
+  }
+}
